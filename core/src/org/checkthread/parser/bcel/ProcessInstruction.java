@@ -448,11 +448,11 @@ public class ProcessInstruction {
 		    
 		// Form 1:
         //  ..., value3, value2, value1 ..., value1, value3, value2, value1
-        // where value1, value2, and value3 are all values of a category 1 computational type (§3.11.1).
+        // where value1, value2, and value3 are all values of a category 1 computational type.
         //
 	    // Form 2:
         // ..., value2, value1 ..., value1, value2, value1
-        // where value1 is a value of a category 1 computational type and value2 is a value of a category 2 computational type (§3.11.1).
+        // where value1 is a value of a category 1 computational type and value2 is a value of a category 2 computational type.
 		case Constants.DUP_X2:
 			logInfo("DUP_X2, stack size: " + stack.size());
 		    t = stack.peek();
@@ -467,10 +467,10 @@ public class ProcessInstruction {
 	
 		// Form 1:
         // ..., value2, value1 ..., value2, value1, value2, value1
-        // where both value1 and value2 are values of a category 1 computational type (§3.11.1).
+        // where both value1 and value2 are values of a category 1 computational type.
         // Form 2:
         // ..., value ..., value, value
-        // where value is a value of a category 2 computational type (§3.11.1).
+        // where value is a value of a category 2 computational type
 		case Constants.DUP2:
 			logInfo("DUP2, stack size: " + stack.size());
 		    t = stack.peek();
@@ -488,10 +488,10 @@ public class ProcessInstruction {
 		    
 		// Form 1:
         // ..., value3, value2, value1 ..., value2, value1, value3, value2, value1
-        //  where value1, value2, and value3 are all values of a category 1 computational type (§3.11.1).
+        //  where value1, value2, and value3 are all values of a category 1 computational type.
         // Form 2:
         //  ..., value2, value1 ..., value1, value2, value1
-        // where value1 is a value of a category 2 computational type and value2 is a value of a category 1 computational type (§3.11.1).		
+        // where value1 is a value of a category 2 computational type and value2 is a value of a category 1 computational type.		
 		case Constants.DUP2_X1:
 			logInfo("DUP2_X1, stack size: " + stack.size());
 		    t = stack.peek();

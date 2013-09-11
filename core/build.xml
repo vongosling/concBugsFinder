@@ -5,7 +5,7 @@
 	<property name="rootDir" value="${basedir}"/>
 	<property name="srcDir" value="${rootDir}/src"/>
 	<property name="3rdparty" value="${rootDir}/lib"/>
-	<property name="classDir" value="${rootDir}/class_output"/>
+	<property name="classDir" value="${rootDir}/class"/>
 	<property name="examplesDir" value="${rootDir}/examples"/>
 	<property name="distDir" value="${rootDir}/dist"/>
 	<mkdir dir="${classDir}"/>
@@ -26,8 +26,8 @@
 	<javac srcdir="${srcDir}"
 	       debug="true"
 	       destdir="${classDir}"
-		   target="1.6"
-	       includes="**/*.java">
+		   target="1.7"
+	       includes="**/*.java" includeantruntime="false">
 	   <classpath>
 	       <fileset dir="${3rdparty}/">
 	       	  <include name="**/ant.jar"/>
