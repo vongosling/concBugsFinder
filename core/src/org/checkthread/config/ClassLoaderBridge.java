@@ -1,0 +1,80 @@
+/*
+Copyright (c) 2009 Joe Conti CheckThread.org
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+package org.checkthread.config;
+
+/**
+ * Convenience bridge for loading classes
+ */
+public class ClassLoaderBridge {
+
+	/**
+	 * CheckThread code should avoid using Class.forName(...)
+	 * Instead, this method should be used to handle class loading.
+	 * @param className
+	 * @return
+	 * @throws ClassNotFoundException
+	 */
+	public static Class loadClass(String className)	throws ClassNotFoundException {
+		ConfigBean configBean = ConfigSingletonFactory.getConfigBean();
+		ClassLoader loader = configBean.getClassLoader();
+		Class retval = null;
+		try {
+			retval = loader.loadClass(className);
+		} catch (Exception e) {
+			retval = Class.forName(className);
+		}
+		return retval;
+	}
+
+	/**
+	 * For loading threadpolicy.xml files
+	 * @return
+	 */
+	public static ClassLoader getClassLoader() {
+		ConfigBean configBean = ConfigSingletonFactory.getConfigBean();
+		ClassLoader retval = configBean.getClassLoader();
+		if(retval==null) {
+			retval = ClassLoaderBridge.class.getClassLoader();
+		}
+		return retval;
+	}
+	
+	/**
+	 * When loading threadpolicy.xml files, we need to check
+	 * the class loader *without* a parent loader. This ensures
+	 * the class loader doesn't delegate to it's parent before
+	 * searching itself. 
+	 * @return
+	 */
+	public static ClassLoader getIsolatedClassLoader() {
+		ConfigBean configBean = ConfigSingletonFactory.getConfigBean();
+		ClassLoader retval = configBean.getIsolatedClassLoader();
+		if(retval==null) {
+			retval = ClassLoaderBridge.class.getClassLoader();
+		}
+		return retval;
+	}
+}

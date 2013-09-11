@@ -1,0 +1,91 @@
+<project name="checkthread" default="build">
+
+<target name="init">
+	<property name="version" value="1.1.0"/>
+	<property name="rootDir" value="${basedir}"/>
+	<property name="srcDir" value="${rootDir}/src"/>
+	<property name="3rdparty" value="${rootDir}/lib"/>
+	<property name="classDir" value="${rootDir}/class_output"/>
+	<property name="examplesDir" value="${rootDir}/examples"/>
+	<property name="distDir" value="${rootDir}/dist"/>
+	<mkdir dir="${classDir}"/>
+	<mkdir dir="${distDir}"/>
+</target>
+
+<target name="clean" depends="init">
+	<delete dir="${classDir}"/>
+	<delete dir="${distDir}"/>
+</target>
+	
+<target name="remove" depends="init,clean">
+    <delete dir="${rootDir}/class_eclipse"/>
+</target>	
+
+<target name="build" depends="init">
+	
+	<javac srcdir="${srcDir}"
+	       debug="true"
+	       destdir="${classDir}"
+		   target="1.6"
+	       includes="**/*.java">
+	   <classpath>
+	       <fileset dir="${3rdparty}/">
+	       	  <include name="**/ant.jar"/>
+	          <include name="**/bcel-5.2.jar"/>
+	       	  <include name="**/junit-4.4.jar"/>
+	       </fileset>
+	   </classpath>
+	</javac>
+
+	<!-- copy threadpolicy.xml -->
+	<copy todir="${classDir}">
+	    <fileset dir="${srcDir}">
+	    	<include name="threadpolicy.xml"/>
+		</fileset>
+	</copy>
+		
+	<!-- annotation jar -->
+    <jar destfile="${distDir}/checkthread-annotations-${version}.jar"
+	     basedir="${classDir}"
+         includes="org/checkthread/annotations/*.class"/>
+         	
+	<!-- static analysis jar -->
+    <jar destfile="${distDir}/checkthread-analyzer-${version}.jar"
+	     basedir="${classDir}"
+    	 includes="org/checkthread/**/*.class,
+    	           threadpolicy.xml"
+         excludes="*.class,
+                   examples/**/*.class,
+    	           javathreads/**/*.class,
+    	           org/checkthread/test/**/*.class,
+    	           org/checkthread/examples/**/*.class,
+                   org/checkthread/annotations/*.class">
+    </jar>    	 
+</target>
+	
+<target name="test" depends="build">
+	<java fork="true" classname="org.checkthread.test.unittests.ThreadcheckerTestSuite">
+	    <jvmarg value="-ea"/>
+		<arg value="-checkdir"/>
+	    <arg value="${classDir}"/>
+		<classpath>
+	       <pathelement location="${classDir}"/>
+	       <fileset dir="${3rdparty}/">
+	       	  <include name="**/*.jar"/>
+	       </fileset>
+	   </classpath>
+    </java>
+</target>
+
+<target name="release" depends="build">
+	
+    <!-- copy examples -->
+	<copy todir="${examplesDir}/src">
+	    <fileset dir="${srcDir}/examples/">
+	    	<include name="**/*.java"/>
+		</fileset>
+	</copy>
+
+</target>
+	
+</project>

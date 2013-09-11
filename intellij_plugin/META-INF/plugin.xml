@@ -1,0 +1,61 @@
+<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
+<idea-plugin>
+  <name>CheckThread</name>
+    
+  <description>
+
+      <![CDATA[
+
+      <b> SUMMARY </b><br>
+      CheckThread provides a thread annotation library and a
+      static analysis engine for finding certain kinds of threading bugs at compile time.
+      CheckThread will report thread confinement violations and race conditions
+      within the Intellij IDE.<br><br>
+
+      <b>QUICK START</b><br>
+
+      <ul>
+      <li>Install the Intellij Plugin, restart Intellij.</li>
+
+      <li>Import the checkthread-annotation.jar file into your Java project.
+      You can get this jar from checkthread.org or inside the unpacked plugin.</li>
+
+      <li>Add @ThreadSafe, @ThreadUnsafe, and @ThreadConfined thread policy Java
+      annotations to your Java code.</li>
+
+       <li>Alternatively, instead of using Java annotations, you can specify a method's
+       thread policy by adding a threadpolicy.xml file to your Intellij project's
+       class path. See checkthread.org for a simple example.</li>
+
+      <li>Press the CheckThread toolbar button. CheckThread will automatically run whenever you
+      compile your Java code.</li>
+      </ul>
+      <br>
+
+      <b>THREAD POLICY LISTING</b><br>
+      <ul>
+         <li> <b>ThreadSafe</b> - Add this annotation to methods that are thread safe. CheckThread will validate that there are no race conditions.</li>
+         <li> <b>ThreadUnsafe</b> - Add this annotation to methods that are not thread safe. </li>
+         <li> <b>ThreadConfined</b>-  Add this annotation to methods that are thread confined. For example, methods on Swing components are confined to the event-dispatch thread. CheckThread will report if you are calling a Swing method on the wrong thread.</li>
+      </ul>
+      <br>
+      
+	  <b>FOR MORE INFO</b>
+	  <ul>
+	  <li>See examples on <a href="http://checkthread.org">checkthread.org</a></li>
+	  <li>Post a question to the <a href="http://groups.google.com/group/checkthread-discussion-forum">checkthread.org forum</a></li>
+	  </ul>
+
+  ]]>
+  </description>
+  <version>1.0.9, Requires Intellij 7 with JRE 1.6 or greater </version>
+  <vendor url="http://www.checkthread.org" email="checkthread@gmail.com">checkthread.org</vendor>
+  <idea-version since-build="3000"/>
+    <actions>
+        
+         <action id="CheckThread" icon="/checkthread_icon.png" class="org.checkthread.plugin.intellij.CheckThreadToggleActionSimple" text="CheckThread" description="CheckThread Toggle">
+            <add-to-group group-id="MainToolBar" anchor="last"/>
+        </action>
+        
+    </actions>
+</idea-plugin>

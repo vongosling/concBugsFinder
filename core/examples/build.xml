@@ -1,0 +1,48 @@
+<?xml version="1.0" ?> 
+<!--
+     This Ant task builds the java examples. 
+-->
+
+<project name="CheckThread Examples" default="build">
+
+<target name="init">
+	<property name="version" value="1.0.9"/>
+	<property name="rootDir" value="${basedir}"/>
+	<property name="srcDir" value="${rootDir}/src"/>
+	<property name="distDir" value="${rootDir}/../dist"/>
+	
+	<property name="classDir" value="${rootDir}/class"/>
+	<property name="jarDir" value="${rootDir}/jar"/>
+	
+	<mkdir dir="${classDir}"/>
+	<mkdir dir="${jarDir}"/>
+</target>
+	
+<target name="clean" depends="init">
+	<delete dir="${classDir}"/>
+	<delete dir="${jarDir}"/>
+</target>
+
+<target name="remove" depends="init,clean">
+	<delete dir="${srcDir}"/>
+</target>
+	
+<target name="build" depends="init">
+    <javac srcdir="${srcDir}"
+		       debug="true" 
+		       destdir="${classDir}"
+		       includes="**/*.java">
+	    <classpath>
+		       <fileset dir="${distDir}/">
+		       	  <include name="**/checkthread-annotations*.jar"/>
+		       </fileset>
+        </classpath>
+	</javac>
+	
+	<!-- annotation jar -->
+    <jar destfile="${jarDir}/checkthread-examples-${version}.jar"
+	     basedir="${classDir}"
+         includes="**/*.class"/>
+</target>
+	
+</project>
